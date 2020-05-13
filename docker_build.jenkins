@@ -10,8 +10,16 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
         timestamps()
     }
+<<<<<<< Updated upstream
  stages{
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
     stage("create docker image") {
+=======
+    stages{
+        stage("create docker image") {
+>>>>>>> Stashed changes
             steps {
                 echo " ============== start building image =================="
                 dir ('docker/toolbox') {
@@ -20,4 +28,8 @@ pipeline {
             }
         }
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
