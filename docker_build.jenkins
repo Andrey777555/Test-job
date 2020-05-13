@@ -6,30 +6,37 @@ pipeline {
     agent { 
         label 'master'
         }
+    triggers { pollSCM('* * * * *') }
     options {
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
         timestamps()
     }
-<<<<<<< Updated upstream
- stages{
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-    stage("create docker image") {
-=======
-    stages{
-        stage("create docker image") {
->>>>>>> Stashed changes
+    stages {
+        stage("docker login") {
             steps {
-                echo " ============== start building image =================="
-                dir ('docker/toolbox') {
-                	sh 'docker build . '
+                echo " ============== docker login =================="
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_andrey', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh """
+                    docker login -u $USERNAME -p $PASSWORD
+                    """
                 }
             }
         }
+        stage("create docker image") {
+            steps {
+                echo " ============== start building image =================="
+                dir ('docker/toolbox') {
+                	sh 'docker build -t andrey/toolbox:latest . '
+                }
+            }
+        }
+        stage("docker push") {
+            steps {
+                echo " ============== start pushing image =================="
+                sh '''
+                docker push andrey/toolbox:latest
+                '''
+            }
+        }
     }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes
