@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo " ============== start building image =================="
                 dir ('docker/toolbox/') {
-                	sh 'docker build -t andrey777555/toolbox:Ter . '
+                	sh 'docker build -t andrey/toolbox:Ter . '
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline {
             steps {
                 echo " ============== start pushing image =================="
                 sh '''
-                docker push andrey777555/toolbox:Ter
+                docker push andrey/toolbox:Ter
                 '''
             }
         }
