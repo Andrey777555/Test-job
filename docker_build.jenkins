@@ -1,4 +1,3 @@
-
 #!groovy
 // Run docker build
 properties([disableConcurrentBuilds()])
@@ -27,7 +26,7 @@ pipeline {
             steps {
                 echo " ============== start building image =================="
                 dir ('docker/toolbox') {
-                	sh 'docker build -t andrey/toolbox:latest . '
+                	sh 'docker build -t andrey777555/toolbox:late . '
                 }
             }
         }
@@ -35,7 +34,7 @@ pipeline {
             steps {
                 echo " ============== start pushing image =================="
                 sh '''
-                docker push andrey/toolbox:latest
+                docker push andrey777555/toolbox:late
                 '''
             }
         }
