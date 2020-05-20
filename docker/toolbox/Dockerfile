@@ -1,3 +1,7 @@
-FROM ubuntu 14.0
-RUN apt-get -y update && apt-get install -y jenkins
- 
+FROM ubuntu:14.04
+MAINTAINER Yuri Trukhin <trukhinyuri@infoboxcloud.com>
+RUN apt-get update
+RUN apt-get install -y nginx
+RUN echo 'Hi, I am in your container' \
+        >/usr/share/nginx/html/index.html
+EXPOSE 80 
