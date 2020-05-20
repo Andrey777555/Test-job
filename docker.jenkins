@@ -1,54 +1,42 @@
 #!groovy
-//RUN docker
-
+// Run docker build
 properties([disableConcurrentBuilds()])
 
-
 pipeline {
-	agent {
-		lable 'master'
-		}
-	triggers { pollSCM('*****')}
-	options {
-		buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
-		timestamps()
-	}
-	steges{
-		stege("doker login"){
-			steps{
-			echo "================ docker login ================="
-			withCredentials([usernamePassword(credentialsId: 'dockerhub_andrey', usernameVriable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-		sh """
-		docker login -u $USERNAME -p $PASSWORD
-		"""
-		}
-
-	    }
-
-	}
-
-	stege("create docker image") {
-		steps {
-		echo "============== start building image =============="
-		dir ('docker/toolbox/docker') {
-			sh 'docker build -t andrey777555/toolbox'
-		}
-            }	
+    agent { 
+        label 'master'
         }
-	stage("docker push") {
-		steps {
-			echo "================ start pushing image =============="
-		sh '''
-		doker push andrey777555/toolbox
-		'''
-		}
-	}
-
-}		
-
-
+    triggers { pollSCM('* * * * *') }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
+    stages {
+        stage("docker login") {
+            steps {
+                echo " ============== docker login =================="
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_andrey', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh """
+                    docker login -u $USERNAME -p $PASSWORD
+                    """
+                }
+            }
+        }
+        stage("create docker image") {
+            steps {
+                echo " ============== start building image =================="
+                dir ('docker/toolbox') {
+                	sh 'docker build -t andrey777555/toolbox:late . '
+                }
+            }
+        }
+        stage("docker push") {
+            steps {
+                echo " ============== start pushing image =================="
+                sh '''
+                docker push andrey777555/toolbox:late
+                '''
+            }
+        }
+    }
 }
-
-
-
-
