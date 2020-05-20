@@ -30,7 +30,7 @@ pipeline {
 	stege("create docker image") {
 		steps {
 		echo "============== start building image =============="
-		dir ('docker/toolbox') {
+		dir ('docker/toolbox/docker') {
 			sh 'docker build -t andrey777555/toolbox'
 		}
             }	
